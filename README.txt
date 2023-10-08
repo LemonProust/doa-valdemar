@@ -1,1 +1,1 @@
-Let\'s work now,
+Let's work now!
