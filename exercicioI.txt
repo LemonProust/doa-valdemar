@@ -4,7 +4,12 @@ EXERCÍCIO I
 1. Qual o valor total na Entidade Shipping?
 R: O valor total na Entidade Shipping é de 1360.00.
 
-SQL: SELECT SUM(cost) AS Total_Shipping FROM Item AS i INNER JOIN ItemShipping AS im ON i.item_id = im.item_id INNER JOIN Shipping AS s ON s.shipping_id = im.shipping_id;
+SQL: 
+
+SELECT SUM(cost) AS Total_Shipping 
+FROM Item AS i 
+INNER JOIN ItemShipping AS im ON i.item_id = im.item_id 
+INNER JOIN Shipping AS s ON s.shipping_id = im.shipping_id;
 
 +----------------+
 | Total_Shipping |
@@ -13,7 +18,11 @@ SQL: SELECT SUM(cost) AS Total_Shipping FROM Item AS i INNER JOIN ItemShipping A
 +----------------+
 
 Alternative:
-SELECT COUNT(*) AS Total_Item_Shipping, SUM(i.cost) AS Total_Cost FROM Item AS i INNER JOIN ItemShipping AS im ON i.item_id = im.item_id
+
+SELECT COUNT(*) AS Total_Item_Shipping, 
+SUM(i.cost) AS Total_Cost 
+FROM Item AS i 
+INNER JOIN ItemShipping AS im ON i.item_id = im.item_id
 INNER JOIN Shipping AS s ON s.shipping_id = im.shipping_id;
 
 +---------------------+------------+
@@ -25,7 +34,12 @@ INNER JOIN Shipping AS s ON s.shipping_id = im.shipping_id;
 2. Quantos Clientes ainda têm encomendas à receber?
 R: 4.
 
-SQL: SELECT status AS Status, COUNT(*) AS Total_Pending FROM Shipping WHERE status = "Pending";
+SQL: 
+
+SELECT status AS Status, 
+COUNT(*) AS Total_Pending 
+FROM Shipping 
+WHERE status = "Pending";
 
 +---------+---------------+
 | Status  | Total_Pending |
@@ -34,8 +48,18 @@ SQL: SELECT status AS Status, COUNT(*) AS Total_Pending FROM Shipping WHERE stat
 +---------+---------------+
 
 Alternative:
-SELECT c.first_name AS First_Name, c.last_name AS Last_Name, s.status AS Status, COUNT(*) AS Total_Pending FROM Shipping AS s INNER JOIN
-ItemShipping AS i ON s.shipping_id = i.shipping_id INNER JOIN Customer AS c ON s.customer_id = c.customer_id WHERE s.status = "Pending" GROUP BY c.customer_id ORDER BY Total_Pending;
+
+SELECT 
+c.first_name AS First_Name, 
+c.last_name AS Last_Name, 
+s.status AS Status, 
+COUNT(*) AS Total_Pending 
+FROM Shipping AS s 
+INNER JOIN ItemShipping AS i ON s.shipping_id = i.shipping_id 
+INNER JOIN Customer AS c ON s.customer_id = c.customer_id 
+WHERE s.status = "Pending" 
+GROUP BY c.customer_id 
+ORDER BY Total_Pending;
 
 +------------+-----------+---------+---------------+
 | First_Name | Last_Name | Status  | Total_Pending |
@@ -50,7 +74,19 @@ ItemShipping AS i ON s.shipping_id = i.shipping_id INNER JOIN Customer AS c ON s
 3. Que Cliente pediu a encomenda mais cara? Quanto custou?
 R: John Reinhardt, 630.00.
 
-SQL: SELECT c.first_name AS First_Name, c.last_name AS Last_Name, SUM(i.cost) AS Total_Cost FROM Customer AS c INNER JOIN Shipping AS s ON c.customer_id = s.customer_id INNER JOIN ItemShipping AS y ON s.shipping_id = y.shipping_id INNER JOIN Item AS i ON i.item_id = y.item_id GROUP BY c.customer_id ORDER BY Total_Cost DESC LIMIT 1;
+SQL: 
+
+SELECT 
+c.first_name AS First_Name, 
+c.last_name AS Last_Name, 
+SUM(i.cost) AS Total_Cost 
+FROM Customer AS c 
+INNER JOIN Shipping AS s ON c.customer_id = s.customer_id 
+INNER JOIN ItemShipping AS y ON s.shipping_id = y.shipping_id 
+INNER JOIN Item AS i ON i.item_id = y.item_id 
+GROUP BY c.customer_id 
+ORDER BY Total_Cost DESC 
+LIMIT 1;
 
 +------------+-----------+------------+
 | First_Name | Last_Name | Total_Cost |
@@ -59,7 +95,19 @@ SQL: SELECT c.first_name AS First_Name, c.last_name AS Last_Name, SUM(i.cost) AS
 +------------+-----------+------------+
 
 Alternative:
-SELECT c.first_name AS First_Name, c.last_name AS Last_Name, SUM(i.cost) AS Total_Cost FROM Customer AS c INNER JOIN Shipping AS s ON c.customer_id = s.customer_id INNER JOIN ItemShipping AS y ON s.shipping_id = y.shipping_id INNER JOIN Item AS i ON i.item_id = y.item_id GROUP BY c.customer_id ORDER BY Total_Cost DESC;
+
+SELECT 
+c.first_name AS First_Name, 
+c.last_name AS Last_Name, 
+SUM(i.cost) AS Total_Cost 
+FROM Customer AS c 
+INNER JOIN Shipping AS s ON c.customer_id = s.customer_id 
+INNER JOIN ItemShipping AS y ON s.shipping_id = y.shipping_id 
+INNER JOIN Item AS i ON i.item_id = y.item_id 
+GROUP BY c.customer_id 
+ORDER BY Total_Cost 
+DESC;
+
 +------------+-----------+------------+
 | First_Name | Last_Name | Total_Cost |
 +------------+-----------+------------+
@@ -75,7 +123,17 @@ R: 	GBR = 910.00
 	POR = 310.00
 	USA = 140.00
 
-SQL: SELECT c.country AS Country, SUM(i.cost) AS Total_Shipping FROM Item AS i INNER JOIN ItemShipping AS im on i.item_id = im.item_id INNER JOIN Shipping AS s ON s.shipping_id = im.shipping_id INNER JOIN Customer as c ON c.customer_id = s.customer_id GROUP BY c.country ORDER BY c.country;
+SQL:
+ 
+SELECT 
+c.country AS Country, 
+SUM(i.cost) AS Total_Shipping 
+FROM Item AS i 
+INNER JOIN ItemShipping AS im on i.item_id = im.item_id 
+INNER JOIN Shipping AS s ON s.shipping_id = im.shipping_id 
+INNER JOIN Customer as c ON c.customer_id = s.customer_id 
+GROUP BY c.country 
+ORDER BY c.country;
 
 +---------+----------------+
 | Country | Total_Shipping |
