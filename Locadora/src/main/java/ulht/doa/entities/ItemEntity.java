@@ -3,12 +3,10 @@ package ulht.doa.entities;
 import io.micronaut.core.annotation.Introspected;
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Introspected
 @Entity
-@Table
-public class Item {
+@Table(name = "ItemTB")
+public class ItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,17 +18,17 @@ public class Item {
     private String returnDate;
 
     @ManyToOne
-    @JoinColumn(name = "movieId")
-    private Movie movies;
+    @JoinColumn(name = "id")
+    private MovieEntity movieEntity;
 
     @ManyToOne
-    @JoinColumn(name = "clientId")
-    private Client clients;
+    @JoinColumn(name = "clientCod")
+    private ClientEntity clientEntity;
 
     // Empty constructor
-    public Item(){}
+    public ItemEntity(){}
 
-    public Item(Long id, int movieCod, int clientCod, double price, String mediaType, String rentalDate, String returnDate, Movie movies, Client clients) {
+    public ItemEntity(Long id, int movieCod, int clientCod, double price, String mediaType, String rentalDate, String returnDate, MovieEntity movieEntity, ClientEntity clientEntity) {
         this.id = id;
         this.movieCod = movieCod;
         this.clientCod = clientCod;
@@ -38,8 +36,8 @@ public class Item {
         this.mediaType = mediaType;
         this.rentalDate = rentalDate;
         this.returnDate = returnDate;
-        this.movies = movies;
-        this.clients = clients;
+        this.movieEntity = movieEntity;
+        this.clientEntity = clientEntity;
     }
 
     // Getters & Setters
@@ -100,19 +98,21 @@ public class Item {
         this.returnDate = returnDate;
     }
 
-    public Movie getMovies() {
-        return movies;
+    public MovieEntity getMovieEntity() {
+        return movieEntity;
     }
 
-    public void setMovies(Movie movies) {
-        this.movies = movies;
+    public void setMovieEntity(MovieEntity movieEntity) {
+        this.movieEntity = movieEntity;
     }
 
-    public Client getClients() {
-        return clients;
+    public ClientEntity getClientEntity() {
+        return clientEntity;
     }
 
-    public void setClients(Client clients) {
-        this.clients = clients;
+    public void setClientEntity(ClientEntity clientEntity) {
+        this.clientEntity = clientEntity;
     }
+
+
 }

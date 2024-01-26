@@ -5,17 +5,22 @@ import jakarta.persistence.*;
 
 @Introspected
 @Entity
-@Table
-public class User {
+@Table(name ="Utilizador")
+public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false, unique = true)
     private String loginName;
+    @Column(nullable = false, unique = true)
     private String email;
+    @Column(nullable = false)
     private String passwd;
+    public UserEntity() {}
 
-    public User(Long id, String name, String loginName, String email, String passwd) {
+    public UserEntity(Long id, String name, String loginName, String email, String passwd) {
         this.id = id;
         this.name = name;
         this.loginName = loginName;
@@ -23,7 +28,7 @@ public class User {
         this.passwd = passwd;
     }
 
-    public User() {}
+    // Getters & Setters
 
     public Long getId() {
         return id;

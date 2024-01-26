@@ -2,30 +2,30 @@ package ulht.doa.entities;
 
 import io.micronaut.core.annotation.Introspected;
 import jakarta.persistence.*;
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Introspected
 @Entity
-@Table
-public class Actor {
+@Table(name = "ActorTB")
+public class ActorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String nationality;
-    @ManyToMany(mappedBy = "actors", cascade = CascadeType.ALL)
-    private List<Movie> movies;
+    @ManyToMany(mappedBy = "actorEntity", cascade = CascadeType.ALL)
+    private List<MovieEntity> movieEntity;
 
     // Empty method constructor
-    public Actor(){}
+    public ActorEntity(){}
 
     // Method constructor
-    public Actor(Long id, String name, String nationality, List<Movie> movies) {
+    public ActorEntity(Long id, String name, String nationality, List<MovieEntity> movieEntity) {
         this.id = id;
         this.name = name;
         this.nationality = nationality;
-        this.movies = movies;
+        this.movieEntity = movieEntity;
     }
 
     // Getters & Setters
@@ -54,11 +54,11 @@ public class Actor {
         this.nationality = nationality;
     }
 
-    public List<Movie> getMovies() {
-        return movies;
+    public List<MovieEntity> getMoviesEntity() {
+        return movieEntity;
     }
 
-    public void setMovies(List<Movie> movies) {
-        this.movies = movies;
+    public void setMoviesEntity(List<MovieEntity> movieEntity) {
+        this.movieEntity = movieEntity;
     }
 }

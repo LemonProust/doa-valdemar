@@ -6,8 +6,8 @@ import java.util.List;
 
 @Introspected
 @Entity
-@Table
-public class Client {
+@Table (name = "ClientTB")
+public class ClientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,13 +17,25 @@ public class Client {
     private String phone;
     private String birthDate;
     private String address;
-    @OneToMany(mappedBy = "clientCod", cascade = CascadeType.ALL)
-    private List<Item> items;
+    @OneToMany(mappedBy = "clients")
+    private List<ItemEntity> itemEntity;
 
     // Empty method constructor
-    public Client(){}
+    public ClientEntity(){}
 
     // Method constructor
+
+
+    public ClientEntity(Long id, String name, String cpf, String email, String phone, String birthDate, String address, List<ItemEntity> itemEntity) {
+        this.id = id;
+        this.name = name;
+        this.cpf = cpf;
+        this.email = email;
+        this.phone = phone;
+        this.birthDate = birthDate;
+        this.address = address;
+        this.itemEntity = itemEntity;
+    }
 
     public Long getId() {
         return id;
@@ -81,11 +93,11 @@ public class Client {
         this.address = address;
     }
 
-    public List<Item> getItems() {
-        return items;
+    public List<ItemEntity> getItemEntity() {
+        return itemEntity;
     }
 
-    public void setItems(List<Item> items) {
-        this.items = items;
+    public void setItemEntity(List<ItemEntity> itemEntity) {
+        this.itemEntity = itemEntity;
     }
 }

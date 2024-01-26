@@ -6,8 +6,8 @@ import java.util.List;
 
 @Introspected
 @Entity
-@Table
-public class Movie {
+@Table(name = "MovieTB")
+public class MovieEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,23 +16,23 @@ public class Movie {
     private int sinopse;
     private int duration;
 
-    @ManyToMany(mappedBy = "movies", cascade = CascadeType.ALL)
-    private List<Actor> actors;
-    @OneToMany(mappedBy = "movieCod", cascade = CascadeType.ALL)
-    private List<Item> items;
+    @ManyToMany(mappedBy = "movieEntity", cascade = CascadeType.ALL)
+    private List<ActorEntity> actorEntity;
+    @OneToMany(mappedBy = "movieEntity", cascade = CascadeType.ALL)
+    private List<ItemEntity> itemEntity;
 
     // Empty constructor
-    public Movie(){}
+    public MovieEntity(){}
 
     // Class constructor
-    public Movie(Long id, String title, String genre, int sinopse, int duration, List<Actor> actors, List<Item> items) {
+    public MovieEntity(Long id, String title, String genre, int sinopse, int duration, List<ActorEntity> actorEntity, List<ItemEntity> itemEntity) {
         this.id = id;
         this.title = title;
         this.genre = genre;
         this.sinopse = sinopse;
         this.duration = duration;
-        this.actors = actors;
-        this.items = items;
+        this.actorEntity = actorEntity;
+        this.itemEntity = itemEntity;
     }
 
     // Getters & Setters
@@ -77,19 +77,19 @@ public class Movie {
         this.duration = duration;
     }
 
-    public List<Actor> getActors() {
-        return actors;
+    public List<ActorEntity> getActorsEntity() {
+        return actorEntity;
     }
 
-    public void setActors(List<Actor> actors) {
-        this.actors = actors;
+    public void setActorEntity(List<ActorEntity> actorEntity) {
+        this.actorEntity = actorEntity;
     }
 
-    public List<Item> getItems() {
-        return items;
+    public List<ItemEntity> getItemEntity() {
+        return itemEntity;
     }
 
-    public void setItems(List<Item> items) {
-        this.items = items;
+    public void setItemEntity(List<ItemEntity> itemEntity) {
+        this.itemEntity = itemEntity;
     }
 }
