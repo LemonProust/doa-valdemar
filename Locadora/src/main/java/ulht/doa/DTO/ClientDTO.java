@@ -1,34 +1,23 @@
-package ulht.doa.entities;
+package ulht.doa.DTO;
 
-import io.micronaut.core.annotation.Introspected;
-import jakarta.persistence.*;
-import ulht.doa.DTO.ClientDTO;
+import ulht.doa.entities.ClientEntity;
+import ulht.doa.entities.ItemEntity;
 
 import java.util.List;
+import java.util.Objects;
 
-@Introspected
-@Entity
-@Table (name = "ClientTB")
-public class ClientEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ClientDTO {
     private Long id;
     private String name;
-    private String cpf;
-    private String email;
+    private String cpf; String email;
     private String phone;
     private String birthDate;
     private String address;
-    @OneToMany(mappedBy = "clients")
     private List<ItemEntity> itemEntity;
 
-    // Empty method constructor
-    public ClientEntity(){}
+    public ClientDTO(){}
 
-    // Method constructor
-
-
-    public ClientEntity(ClientDTO clientDTO) {
+    public ClientDTO(ClientEntity clientEntity, List<ItemEntity> itemEntity) {
         this.id = id;
         this.name = name;
         this.cpf = cpf;
@@ -38,6 +27,8 @@ public class ClientEntity {
         this.address = address;
         this.itemEntity = itemEntity;
     }
+    //Getters & Setters
+
 
     public Long getId() {
         return id;
@@ -103,5 +94,16 @@ public class ClientEntity {
         this.itemEntity = itemEntity;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ClientDTO clientDTO = (ClientDTO) o;
+        return Objects.equals(id, clientDTO.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

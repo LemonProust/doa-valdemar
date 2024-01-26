@@ -2,8 +2,9 @@ package ulht.doa.repositories;
 
 import io.micronaut.data.annotation.Repository;
 import io.micronaut.data.repository.CrudRepository;
-import ulht.doa.entities.UserEntity;
+import ulht.doa.entities.ClientEntity;
+
 @Repository
-public interface UserRepository extends CrudRepository<UserEntity, Long> {
+public interface ClientRepository extends CrudRepository<ClientEntity, Long> {
 
 }

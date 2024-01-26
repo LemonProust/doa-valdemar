@@ -13,8 +13,10 @@ public class UserDTO {
     private String email;
     private String passwd;
 
+    // Empty method constructor
     public UserDTO(){}
 
+    // Method constructor
     public UserDTO(UserEntity userEntity){
         this.id = userEntity.getId();
         this.name = userEntity.getName();
@@ -67,11 +69,11 @@ public class UserDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserDTO userDTO = (UserDTO) o;
-        return Objects.equals(id, userDTO.id) && Objects.equals(name, userDTO.name) && Objects.equals(loginName, userDTO.loginName) && Objects.equals(email, userDTO.email) && Objects.equals(passwd, userDTO.passwd);
+        return Objects.equals(id, userDTO.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, loginName, email, passwd);
+        return Objects.hash(id);
     }
 }

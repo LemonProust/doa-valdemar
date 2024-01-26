@@ -2,6 +2,7 @@ package ulht.doa.entities;
 
 import io.micronaut.core.annotation.Introspected;
 import jakarta.persistence.*;
+import ulht.doa.DTO.UserDTO;
 
 @Introspected
 @Entity
@@ -18,9 +19,12 @@ public class UserEntity {
     private String email;
     @Column(nullable = false)
     private String passwd;
+
+    // Empty method constructor
     public UserEntity() {}
 
-    public UserEntity(Long id, String name, String loginName, String email, String passwd) {
+    // Method constructor
+    public UserEntity(UserDTO userDTO) {
         this.id = id;
         this.name = name;
         this.loginName = loginName;
