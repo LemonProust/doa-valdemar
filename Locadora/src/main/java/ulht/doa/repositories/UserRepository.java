@@ -7,3 +7,4 @@ import ulht.doa.entities.UserEntity;
 public interface UserRepository extends CrudRepository<UserEntity, Long> {
 
 }
+gi

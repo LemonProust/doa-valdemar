@@ -47,18 +47,6 @@
             <artifactId>micronaut-http-server-tomcat</artifactId>
             <scope>compile</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.micronaut.data/micronaut-data-processor -->
-        <dependency>
-            <groupId>io.micronaut.data</groupId>
-            <artifactId>micronaut-data-processor</artifactId>
-            <version>4.4.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.micronaut.data</groupId>
-            <artifactId>micronaut-data-jdbc</artifactId>
-            <scope>compile</scope>
-        </dependency>
         <dependency>
             <groupId>io.micronaut.sql</groupId>
             <artifactId>micronaut-hibernate-jpa</artifactId>
@@ -95,10 +83,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.micronaut.data</groupId>
-            <artifactId>micronaut-data-hibernate-jpa</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <scope>test</scope>
@@ -107,11 +91,6 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.persistence</groupId>
-            <artifactId>jakarta.persistence-api</artifactId>
-            <version>3.2.0-M1</version>
         </dependency>
     </dependencies>
     <build>
