@@ -1,15 +1,12 @@
-package ulht.doa.entities;
+package ulht.doa.DTO;
 
-import io.micronaut.core.annotation.Introspected;
-import jakarta.persistence.*;
-import ulht.doa.DTO.ItemDTO;
+import ulht.doa.entities.ClientEntity;
+import ulht.doa.entities.ItemEntity;
+import ulht.doa.entities.MovieEntity;
 
-@Introspected
-@Entity
-@Table(name = "ItemTB")
-public class ItemEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+import java.util.Objects;
+
+public class ItemDTO {
     private Long id;
     private int movieCod;
     private int clientCod;
@@ -17,32 +14,26 @@ public class ItemEntity {
     private String mediaType;
     private String rentalDate;
     private String returnDate;
-
-    @ManyToOne
-    @JoinColumn(name = "mpvieCod")
     private MovieEntity movieEntity;
-
-    @ManyToOne
-    @JoinColumn(name = "clientCod")
     private ClientEntity clientEntity;
 
-    // Empty constructor
-    public ItemEntity(){}
+    // Empty class constructor
+    public ItemDTO(){}
 
-    // Class constructor
-    public ItemEntity(ItemDTO itemDTO) {
-        this.id = id;
-        this.movieCod = movieCod;
-        this.clientCod = clientCod;
-        this.price = price;
-        this.mediaType = mediaType;
-        this.rentalDate = rentalDate;
-        this.returnDate = returnDate;
-        this.movieEntity = movieEntity;
-        this.clientEntity = clientEntity;
+    // Class constructor with references to Item Entity
+    public ItemDTO(ItemEntity itemEntity){
+        this.id = itemEntity.getId();
+        this.movieCod = itemEntity.getMovieCod();
+        this.clientCod = itemEntity.getClientCod();
+        this.price = itemEntity.getPrice();
+        this.mediaType = itemEntity.getMediaType();
+        this.rentalDate = itemEntity.getRentalDate();
+        this.returnDate = itemEntity.getReturnDate();
+        this.movieEntity = itemEntity.getMovieEntity();
+        this.clientEntity = itemEntity.getClientEntity();
     }
 
-    // Getters & Setters
+    //Getters & Setters
 
     public Long getId() {
         return id;
@@ -114,5 +105,19 @@ public class ItemEntity {
 
     public void setClientEntity(ClientEntity clientEntity) {
         this.clientEntity = clientEntity;
+    }
+
+    //Hush & Eguals
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ItemDTO itemDTO = (ItemDTO) o;
+        return Objects.equals(id, itemDTO.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
