@@ -2,6 +2,7 @@ package ulht.doa.entities;
 
 import io.micronaut.core.annotation.Introspected;
 import jakarta.persistence.*;
+import ulht.doa.DTO.MovieDTO;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class MovieEntity {
     private Long id;
     private String title;
     private String genre;
-    private int sinopse;
+    private int synopsis;
     private int duration;
 
     @ManyToMany(mappedBy = "movieEntity")
@@ -26,11 +27,11 @@ public class MovieEntity {
     public MovieEntity(){}
 
     // Class constructor
-    public MovieEntity(Long id, String title, String genre, int sinopse, int duration, List<ActorEntity> actorEntity, List<ItemEntity> itemEntity) {
+    public MovieEntity(MovieDTO movieDTO) {
         this.id = id;
         this.title = title;
         this.genre = genre;
-        this.sinopse = sinopse;
+        this.synopsis = synopsis;
         this.duration = duration;
         this.actorEntity = actorEntity;
         this.itemEntity = itemEntity;
@@ -62,12 +63,12 @@ public class MovieEntity {
         this.genre = genre;
     }
 
-    public int getSinopse() {
-        return sinopse;
+    public int getSynopsis() {
+        return synopsis;
     }
 
-    public void setSinopse(int sinopse) {
-        this.sinopse = sinopse;
+    public void setSynopsis(int synopsis) {
+        this.synopsis = synopsis;
     }
 
     public int getDuration() {

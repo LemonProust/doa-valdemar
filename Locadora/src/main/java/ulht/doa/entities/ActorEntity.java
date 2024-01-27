@@ -3,6 +3,7 @@ package ulht.doa.entities;
 import jakarta.persistence.*;
 
 import io.micronaut.core.annotation.Introspected;
+import ulht.doa.DTO.ActorDTO;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class ActorEntity {
 
     public ActorEntity(){}
 
-    public ActorEntity(Long id, String name, String nationality, List<MovieEntity> movieEntity) {
+    public ActorEntity(ActorDTO actorDTO) {
         this.id = id;
         this.name = name;
         this.nationality = nationality;

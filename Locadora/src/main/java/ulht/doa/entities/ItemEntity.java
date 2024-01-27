@@ -29,6 +29,7 @@ public class ItemEntity {
     // Empty constructor
     public ItemEntity(){}
 
+    // Class constructor
     public ItemEntity(Long id, int movieCod, int clientCod, double price, String mediaType, String rentalDate, String returnDate, MovieEntity movieEntity) {
         this.id = id;
         this.movieCod = movieCod;
