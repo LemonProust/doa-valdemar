@@ -22,15 +22,15 @@ public class ItemEntity {
     private MovieEntity movieEntity;
 
 
-//    @ManyToOne
-//    @JoinColumn(name = "clientCod")
-//    private ClientEntity clientEntity;
+    @ManyToOne
+    @JoinColumn(name = "clientCod")
+    private ClientEntity clientEntity;
 
     // Empty constructor
     public ItemEntity(){}
 
     // Class constructor
-    public ItemEntity(Long id, int movieCod, int clientCod, double price, String mediaType, String rentalDate, String returnDate, MovieEntity movieEntity) {
+    public ItemEntity(Long id, int movieCod, int clientCod, double price, String mediaType, String rentalDate, String returnDate, MovieEntity movieEntity, ClientEntity clientEntity) {
         this.id = id;
         this.movieCod = movieCod;
         this.clientCod = clientCod;
@@ -39,7 +39,7 @@ public class ItemEntity {
         this.rentalDate = rentalDate;
         this.returnDate = returnDate;
         this.movieEntity = movieEntity;
-        //this.clientEntity = clientEntity;
+        this.clientEntity = clientEntity;
     }
 
     // Getters & Setters
