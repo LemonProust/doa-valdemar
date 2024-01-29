@@ -31,7 +31,7 @@ public class UserController {
 
     // @GET
     // Method responsible for getting a user
-    @GetMapping
+    @GetMapping("/{id}")
     public UserDTO getUserById(@PathVariable("id") Long id){
         return userService.getUserById(id);
     }
