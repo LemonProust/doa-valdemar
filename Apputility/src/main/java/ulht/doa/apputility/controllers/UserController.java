@@ -15,16 +15,25 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private final UserService userService;
+    private UserService userService;
 
-    public UserController(UserService userService){
-        this.userService = userService;
-    }
+    public UserController(){}
+
+//    public UserController(UserService userService){
+//        this.userService = userService;
+//    }
     // @GET
     // Method responsible for getting all users
     @GetMapping
     public List<UserDTO> getAllUsers(){
         return userService.getAllUsers();
+    }
+
+    // @GET
+    // Method responsible for getting a user
+    @GetMapping
+    public UserDTO getUserById(@PathVariable("id") Long id){
+        return userService.getUserById(id);
     }
 
     //@POST
