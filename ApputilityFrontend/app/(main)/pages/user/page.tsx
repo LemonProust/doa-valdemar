@@ -5,21 +5,16 @@ import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { Dialog } from 'primereact/dialog';
 import { FileUpload } from 'primereact/fileupload';
-import { InputNumber, InputNumberValueChangeEvent } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { RadioButton, RadioButtonChangeEvent } from 'primereact/radiobutton';
-import { Rating } from 'primereact/rating';
 import { Toast } from 'primereact/toast';
 import { Toolbar } from 'primereact/toolbar';
 import { classNames } from 'primereact/utils';
-import React, { useEffect, useRef, useState } from 'react';
-import { ProductService } from '../../../../demo/service/ProductService';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { UserService } from 'service/UserService';
 import { Project } from '@/types';
 
-/* @todo Used 'as any' for types here. Will fix in next version due to onSelectionChange event type issue. */
-const Crud = () => {
+// Componentes and components
+const CrudUser = () => {
     let emptyUser: Project.User = {
         id: 0,
         name: '',
@@ -38,7 +33,7 @@ const Crud = () => {
     const [globalFilter, setGlobalFilter] = useState('');
     const toast = useRef<Toast>(null);
     const dt = useRef<DataTable<any>>(null);
-    const userService = new UserService();
+    const userService = useMemo(() => new UserService(), []);
 
     useEffect(() => {
         if(users.length ==0 ){
@@ -52,7 +47,7 @@ const Crud = () => {
             });
 
         }
-    }, [users]);
+    }, [userService, users]);
 
     const openNew = () => {
         setUser(emptyUser);
@@ -83,7 +78,7 @@ const Crud = () => {
                 setUserDialog(false);// se o usuário foi criado, o dialogo será fechado.
                 setUser(emptyUser); // Limpa o formulário.
                 setUsers([]);
-                toast.current.show({ severity: 'info', summary: 'Successo', detail: 'Utilizador criado com sucesso!' });// Se o usuário não foi criado, o toast será fechado.
+                toast.current?.show({ severity: 'info', summary: 'Successo', detail: 'Utilizador criado com sucesso!' });// Se o usuário não foi criado, o toast será fechado.
             }).catch((error) => {
                 console.log(error.data.message);
                 toast.current.show({ severity: 'error', summary: 'Error', detail: 'Erro ao criar utilizador! ' + error.data.message });
@@ -93,7 +88,7 @@ const Crud = () => {
                 console.log(response.data);
                 setUserDialog(false);// se o utilizador foi atualizado, o dialogo será fechado.
                 setUsers([]);
-                toast.current.show({ severity: 'info', summary: 'Successo', detail: 'Utilizador atualizado com sucesso!' });// Se o utilizador não foi atualizado, o toast será fechado.
+                toast.current?.show({ severity: 'info', summary: 'Successo', detail: 'Utilizador atualizado com sucesso!' });// Se o utilizador não foi atualizado, o toast será fechado.
             }).catch((error) => {
                 console.log(error.data.message);
                 toast.current.show({ severity: 'error', summary: 'Error', detail: 'Erro ao atualizar utilizador!'+ error.data.message });
@@ -113,16 +108,18 @@ const Crud = () => {
     };
 
     const deleteUser = () => {
-            userService.deleteUser(user.id).then((response) => { 
-            setUser(emptyUser); // Limpa o formulário.    
-            setUsers([]);           
-            setDeleteUserDialog(false);// se o usuário foi eliminado, o dialogo será fechado.            
-            toast.current?.show({ severity: 'success', summary: 'Successo!', detail: 'Utilizador eliminado com sucesso!', life:3000 }); // Se o utilizador não foi excluído, o toast será fechado.
-            
-        }).catch((error) => {
-            console.log(error.data.message);
-            toast.current.show({ severity: 'error', summary: 'Erro!', detail: 'Erro ao eliminar utilizador!'+ error.data.message, life: 3000 }); // Se o utilizador não foi excluído, o toast será fechado.
-        }); 
+            if(user.id){
+                userService.deleteUser(user.id).then((response) => { 
+                setUser(emptyUser); // Limpa o formulário.    
+                setUsers([]);           
+                setDeleteUserDialog(false);// se o usuário foi eliminado, o dialogo será fechado.            
+                toast.current?.show({ severity: 'success', summary: 'Successo!', detail: 'Utilizador eliminado com sucesso!', life:3000 }); // Se o utilizador não foi excluído, o toast será fechado.
+                
+                }).catch((error) => {
+                    console.log(error.data.message);
+                    toast.current?.show({ severity: 'error', summary: 'Erro!', detail: 'Erro ao eliminar utilizador!'+ error.data.message, life: 3000 }); // Se o utilizador não foi excluído, o toast será fechado.
+                })
+            }; 
         /* let _users = (users as any)?.filter((val: any) => val.id !== user.id);
         setUsers(_users);
         setDeleteUserDialog(false);
@@ -138,7 +135,8 @@ const Crud = () => {
         });  */
     };
 
-    /* const findIndexById = (id: string) => {
+    // Método responsável por buscar um utilizador pelo seu login.
+    const findIndexById = (id: string) => {
         let index = -1;
         for (let i = 0; i < (users as any)?.length; i++) {
             if ((users as any)[i].id === id) {
@@ -150,7 +148,8 @@ const Crud = () => {
         return index;
     };
 
-    const createId = () => {
+    // Método responsável por gerar código aleatorio para um utilizador.
+    /*const createId = () => {
         let id = '';
         let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         for (let i = 0; i < 5; i++) {
@@ -158,34 +157,33 @@ const Crud = () => {
         }
         return id;
     };
- */
+    */
+
+    // Método responsável por gerar ficheiros CSV dos utilizadores.
     const exportCSV = () => {
         dt.current?.exportCSV();
     };
 
+    // Confirmação de exclusão de utilizador.
     const confirmDeleteSelected = () => {
         setDeleteUsersDialog(true);
     };
 
+    // Elimina utilizadores selecionados.
     const deleteSelectedUsers = () => {
-        /* let _products = (products as any)?.filter((val: any) => !(selectedProducts as any)?.includes(val));
-        setProducts(_products);
-        setDeleteProductsDialog(false);
-        setSelectedProducts(null);
+        let _users = (users as any)?.filter((val: any) => !(selectedUsers as any)?.includes(val));
+        setUsers(_users);
+        setDeleteUsersDialog(false);
+        setSelectedUsers(null);
         toast.current?.show({
             severity: 'success',
-            summary: 'Successful',
-            detail: 'Products Deleted',
+            summary: 'Successo!',
+            detail: 'Os Utilizadores selecionados foram eliminados com sucesso!',
             life: 3000
-        }); */
+        }); 
     };
 
-    /* const onCategoryChange = (e: RadioButtonChangeEvent) => {
-        let _product = { ...product };
-        _product['category'] = e.value;
-        setProduct(_product);
-    };*/
-
+    
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, name: string) => {
         const val = (e.target && e.target.value) || '';
         let _user = { ...user };
@@ -334,9 +332,7 @@ const Crud = () => {
                         <Column field="name" header="Nome" sortable body={nameBodyTemplate} headerStyle={{ minWidth: '15rem' }}></Column>
                         <Column field="loginName" header="Login" sortable body={loginNameBodyTemplate} headerStyle={{ minWidth: '15rem'}}></Column>
                         <Column field="email" header="Email" sortable body={emailBodyTemplate} headerStyle={{ minWidth: '15rem' }}></Column>
-                        {/* <Column field="rating" header="Reviews" body={ratingBodyTemplate} sortable></Column>
-                        <Column field="inventoryStatus" header="Status" body={statusBodyTemplate} sortable headerStyle={{ minWidth: '10rem' }}></Column>
-                        <Column header="Image" body={imageBodyTemplate}></Column> */} 
+                        {/*<Column header="Image" body={imageBodyTemplate}></Column> */} 
                         <Column body={actionBodyTemplate} headerStyle={{ minWidth: '10rem' }}></Column>
                     </DataTable>
 
@@ -425,4 +421,4 @@ const Crud = () => {
     );
 };
 
-export default Crud;
+export default CrudUser;
