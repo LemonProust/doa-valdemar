@@ -28,7 +28,7 @@ const Crud = () => {
         passwd: ''
     };
 
-    const [users, setUsers] = useState(null);
+    const [users, setUsers] = useState<Project.User[]>([]);
     const [userDialog, setUserDialog] = useState(false);
     const [deleteUserDialog, setDeleteUserDialog] = useState(false);
     const [deleteUsersDialog, setDeleteUsersDialog] = useState(false);
@@ -41,16 +41,18 @@ const Crud = () => {
     const userService = new UserService();
 
     useEffect(() => {
-        //ProductService.getProducts().then((data) => setProducts(data as any));
-        userService.getAllUsers()
-        .then((response) => {
-            console.log(response.data);
-            setUsers(response.data);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-    }, []);
+        if(users.length ==0 ){
+            userService.getAllUsers()
+            .then((response) => {
+                console.log(response.data);
+                setUsers(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        }
+    }, [users]);
 
     const openNew = () => {
         setUser(emptyUser);
@@ -80,45 +82,24 @@ const Crud = () => {
                 console.log(response.data);
                 setUserDialog(false);// se o usuário foi criado, o dialogo será fechado.
                 setUser(emptyUser); // Limpa o formulário.
-                toast.current.show({ severity: 'info', summary: 'Success', detail: 'Utilizador criado com sucesso!' });// Se o usuário não foi criado, o toast será fechado.
-               /*  hideDialog();
-                dt.current.reset();
-                dt.current.refresh(); */
+                setUsers([]);
+                toast.current.show({ severity: 'info', summary: 'Successo', detail: 'Utilizador criado com sucesso!' });// Se o usuário não foi criado, o toast será fechado.
             }).catch((error) => {
                 console.log(error.data.message);
                 toast.current.show({ severity: 'error', summary: 'Error', detail: 'Erro ao criar utilizador! ' + error.data.message });
             });
-        } else {}
-
-        /* if (product.name.trim()) {
-            let _users = [...(users as any)];
-            let _user = { ...user };
-            if (user.id) {
-                const index = findIndexById(user.id);
-
-                _users[index] = _users;
-                toast.current?.show({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'User Updated',
-                    life: 3000
-                });
-            } else {
-                _user.id = createId();
-                _user.image = 'user-placeholder.svg';
-                _products.push(_product);
-                toast.current?.show({
-                    severity: 'success',
-                    summary: 'Successful',
-                    detail: 'Product Created',
-                    life: 3000
-                });
-            }
-
-            setProducts(_products as any);
-            setProductDialog(false);
-            setProduct(emptyProduct);
-        }*/
+        } else {
+            userService.updateUser(user).then((response) => {
+                console.log(response.data);
+                setUserDialog(false);// se o utilizador foi atualizado, o dialogo será fechado.
+                setUsers([]);
+                toast.current.show({ severity: 'info', summary: 'Successo', detail: 'Utilizador atualizado com sucesso!' });// Se o utilizador não foi atualizado, o toast será fechado.
+            }).catch((error) => {
+                console.log(error.data.message);
+                toast.current.show({ severity: 'error', summary: 'Error', detail: 'Erro ao atualizar utilizador!'+ error.data.message });
+            });
+        }
+        
     }; 
 
     const editUser = (user: Project.user) => {
@@ -132,7 +113,17 @@ const Crud = () => {
     };
 
     const deleteUser = () => {
-       /*  let _users = (users as any)?.filter((val: any) => val.id !== user.id);
+            userService.deleteUser(user.id).then((response) => { 
+            setUser(emptyUser); // Limpa o formulário.    
+            setUsers([]);           
+            setDeleteUserDialog(false);// se o usuário foi eliminado, o dialogo será fechado.            
+            toast.current?.show({ severity: 'success', summary: 'Successo!', detail: 'Utilizador eliminado com sucesso!', life:3000 }); // Se o utilizador não foi excluído, o toast será fechado.
+            
+        }).catch((error) => {
+            console.log(error.data.message);
+            toast.current.show({ severity: 'error', summary: 'Erro!', detail: 'Erro ao eliminar utilizador!'+ error.data.message, life: 3000 }); // Se o utilizador não foi excluído, o toast será fechado.
+        }); 
+        /* let _users = (users as any)?.filter((val: any) => val.id !== user.id);
         setUsers(_users);
         setDeleteUserDialog(false);
         setUser(emptyUser);
@@ -141,7 +132,10 @@ const Crud = () => {
             summary: 'Successful',
             detail: 'User Deleted',
             life: 3000
-        }); */
+        }).catch((error) => {
+            console.log(error.data.message);
+            toast.current.show({ severity: 'error', summary: 'Erro!', detail: 'Erro ao eliminar utilizador!'+ error.data.message, life: 3000 });
+        });  */
     };
 
     /* const findIndexById = (id: string) => {
