@@ -15,6 +15,7 @@ import { Toolbar } from 'primereact/toolbar';
 import { classNames } from 'primereact/utils';
 import React, { useEffect, useRef, useState } from 'react';
 import { ProductService } from '../../../../demo/service/ProductService';
+import { UserService } from 'service/UserService';
 import { Project } from '@/types';
 
 /* @todo Used 'as any' for types here. Will fix in next version due to onSelectionChange event type issue. */
@@ -37,13 +38,14 @@ const Crud = () => {
     const [globalFilter, setGlobalFilter] = useState('');
     const toast = useRef<Toast>(null);
     const dt = useRef<DataTable<any>>(null);
-    const userService = new UserService(null);
+    const userService = new UserService();
 
     useEffect(() => {
         //ProductService.getProducts().then((data) => setProducts(data as any));
         userService.getAllUsers()
         .then((response) => {
             console.log(response.data);
+            setUsers(response.data);
         })
         .catch((error) => {
             console.log(error);
@@ -71,6 +73,22 @@ const Crud = () => {
 
     const saveUser = () => {
         setSubmitted(true);
+
+        // TODO: Validation
+        if (!user.id) {
+            userService.saveUser(user).then((response) => {
+                console.log(response.data);
+                setUserDialog(false);// se o usuário foi criado, o dialogo será fechado.
+                setUser(emptyUser); // Limpa o formulário.
+                toast.current.show({ severity: 'info', summary: 'Success', detail: 'Utilizador criado com sucesso!' });// Se o usuário não foi criado, o toast será fechado.
+               /*  hideDialog();
+                dt.current.reset();
+                dt.current.refresh(); */
+            }).catch((error) => {
+                console.log(error.data.message);
+                toast.current.show({ severity: 'error', summary: 'Error', detail: 'Erro ao criar utilizador! ' + error.data.message });
+            });
+        } else {}
 
         /* if (product.name.trim()) {
             let _users = [...(users as any)];
