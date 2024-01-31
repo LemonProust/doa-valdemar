@@ -12,6 +12,7 @@ public class ProfileDTO {
 
     }
 
+    // Method constructor responsible for build and initialize the object
     public ProfileDTO(ProfileEntity profileEntity) {
         BeanUtils.copyProperties(profileEntity, this);
     }

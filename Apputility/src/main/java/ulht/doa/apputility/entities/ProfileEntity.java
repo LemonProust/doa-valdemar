@@ -15,8 +15,10 @@ public class ProfileEntity {
     @Column(nullable = false)
     private String description;
 
+    // Empty constructor for jakarta annotation
     public ProfileEntity(){}
 
+    // Method constructor responsible for build and initialize the object
     public ProfileEntity(ProfileDTO profileDTO) {
         BeanUtils.copyProperties(profileDTO, this);
     }

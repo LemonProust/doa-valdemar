@@ -14,16 +14,14 @@ import java.util.List;
 @CrossOrigin
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    public UserController(){}
+    public UserController(UserService userService){
+        this.userService = userService;
+    }
 
-//    public UserController(UserService userService){
-//        this.userService = userService;
-//    }
     // @GET
-    // Method responsible for getting all users
+    // Method responsible for getting all Users
     @GetMapping
     public List<UserDTO> getAllUsers(){
         return userService.getAllUsers();
@@ -44,14 +42,14 @@ public class UserController {
     }
 
     //@PUT
-    // Method responsible for update data
+    // Method responsible for update User data
     @PutMapping
     public UserDTO update(@RequestBody UserDTO userDTO){
         return userService.update(userDTO);
     }
 
     //@DELETE
-    // Method responsible for DELETE user
+    // Method responsible for DELETE User
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id){
         userService.delete(id);

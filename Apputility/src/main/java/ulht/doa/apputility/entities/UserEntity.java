@@ -30,7 +30,6 @@ public class UserEntity {
     }
 
     // Getters & Setters
-
     public Long getId() {
         return id;
     }

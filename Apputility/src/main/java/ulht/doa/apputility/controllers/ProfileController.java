@@ -4,41 +4,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ulht.doa.apputility.DTO.ProfileDTO;
-import ulht.doa.apputility.DTO.ResourceDTO;
-import ulht.doa.apputility.services.ResourceService;
+import ulht.doa.apputility.services.ProfileService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/resource")
+@RequestMapping(value = "/profile")
 @CrossOrigin
 public class ProfileController {
 
-    @Autowired
-    private ResourceService resourceService;
+    private final ProfileService profileService;
 
-    public List<ResourceDTO> getAllResources(){
-        return resourceService.getAllResources();
+    public ProfileController(ProfileService profileService) {
+        this.profileService = profileService;
+    }
+
+    @GetMapping
+    public List<ProfileDTO> getAllProfiles(){
+        return profileService.getAllProfiles();
     }
 
     @GetMapping("/{id}")
-    public ResourceDTO getResourceById(@PathVariable("id") Long id){
-        return resourceService.getResourceById(id);
+    public ProfileDTO getProfileById(@PathVariable("id") Long id){
+        return profileService.getProfileById(id);
     }
 
     @PostMapping
-    public void saveResource(@RequestBody ResourceDTO resourceDTO){
-        resourceService.saveResource(resourceDTO);
+    public void saveProfile(@RequestBody ProfileDTO profileDTO){
+        profileService.saveProfile(profileDTO);
     }
 
     @PutMapping
-    public ResourceDTO updateResource(@RequestBody ResourceDTO resourceDTO){
-        return resourceService.updateResource(resourceDTO);
+    public ProfileDTO updateProfile(@RequestBody ProfileDTO profileDTO){
+        return profileService.updateProfile(profileDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteResource(@PathVariable("id") Long id){
-        resourceService.deleteResource(id);
+    public ResponseEntity<Void> deleteProfile(@PathVariable("id") Long id){
+        profileService.deleteProfile(id);
         return ResponseEntity.ok().build();
     }
 
