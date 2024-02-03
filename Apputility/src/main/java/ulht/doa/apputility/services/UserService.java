@@ -17,30 +17,30 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    // Read all Users in the Table UsersTB
+    // Method responsible for get all Users in the Table UsersTB
     public List<UserDTO> getAllUsers(){
         List<UserEntity> userEntity = userRepository.findAll();
         return userEntity.stream().map(UserDTO::new).toList();
     }
 
-    // Read a selected User in the Table UsersTB
+    // Method responsible for get a selected User by id
     public UserDTO getUserById(Long id){
         return new UserDTO(userRepository.findById(id).get());
     }
 
-    // Method for insert values to the User's Table
+    // Method responsible for insert values to the User's Table
     public void insert(UserDTO userDTO){
         UserEntity userEntity = new UserEntity(userDTO);
         userRepository.save(userEntity);
     }
 
-    // Method update
+    // Method responsible for update user
     public UserDTO update(UserDTO userDTO){
         UserEntity userEntity = new UserEntity(userDTO);
         return new UserDTO(userRepository.save(userEntity));
     }
 
-    // Method for DELETE user
+    // Method responsible for DELETE user
     public void delete(Long id){
         UserEntity userEntity = userRepository.findById(id).get();
         userRepository.delete(userEntity);
