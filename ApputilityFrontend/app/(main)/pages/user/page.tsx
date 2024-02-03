@@ -23,7 +23,7 @@ const CrudUser = () => {
         passwd: ''
     };
 
-    const [users, setUsers] = useState<Project.User[]>([]);
+    const [users, setUsers] = useState<Project.User[] | null>(null);
     const [userDialog, setUserDialog] = useState(false);
     const [deleteUserDialog, setDeleteUserDialog] = useState(false);
     const [deleteUsersDialog, setDeleteUsersDialog] = useState(false);
@@ -36,8 +36,8 @@ const CrudUser = () => {
     const userService = useMemo(() => new UserService(), []);
 
     useEffect(() => {
-        if(users.length ==0 ){
-            userService.getAllUsers()
+        if(!users){
+            userService.getAll()
             .then((response) => {
                 console.log(response.data);
                 setUsers(response.data);
@@ -73,21 +73,21 @@ const CrudUser = () => {
 
         // TODO: Validation
         if (!user.id) {
-            userService.saveUser(user).then((response) => {
+            userService.save(user).then((response) => {
                 console.log(response.data);
                 setUserDialog(false);// se o usuário foi criado, o dialogo será fechado.
                 setUser(emptyUser); // Limpa o formulário.
-                setUsers([]);
+                setUsers(null);
                 toast.current?.show({ severity: 'info', summary: 'Successo', detail: 'Utilizador criado com sucesso!' });// Se o usuário não foi criado, o toast será fechado.
             }).catch((error) => {
                 console.log(error.data.message);
                 toast.current.show({ severity: 'error', summary: 'Error', detail: 'Erro ao criar utilizador! ' + error.data.message });
             });
         } else {
-            userService.updateUser(user).then((response) => {
+            userService.update(user).then((response) => {
                 console.log(response.data);
                 setUserDialog(false);// se o utilizador foi atualizado, o dialogo será fechado.
-                setUsers([]);
+                setUsers(null);
                 toast.current?.show({ severity: 'info', summary: 'Successo', detail: 'Utilizador atualizado com sucesso!' });// Se o utilizador não foi atualizado, o toast será fechado.
             }).catch((error) => {
                 console.log(error.data.message);
@@ -109,9 +109,9 @@ const CrudUser = () => {
 
     const deleteUser = () => {
             if(user.id){
-                userService.deleteUser(user.id).then((response) => { 
+                userService.delete(user.id).then((response) => { 
                 setUser(emptyUser); // Limpa o formulário.    
-                setUsers([]);           
+                setUsers(null);           
                 setDeleteUserDialog(false);// se o usuário foi eliminado, o dialogo será fechado.            
                 toast.current?.show({ severity: 'success', summary: 'Successo!', detail: 'Utilizador eliminado com sucesso!', life:3000 }); // Se o utilizador não foi excluído, o toast será fechado.
                 
@@ -211,6 +211,7 @@ const CrudUser = () => {
         );
     };
 
+    //Exportação de ficheiros CSV dos recusos.
     const rightToolbarTemplate = () => {
         return (
             <React.Fragment>
@@ -293,8 +294,8 @@ const CrudUser = () => {
     );
     const deleteUserDialogFooter = (
         <>
-            <Button label="Sim" icon="pi pi-times" text onClick={hideDeleteUserDialog} />
-            <Button label="Não" icon="pi pi-check" text onClick={deleteUser} />
+            <Button label="Não" icon="pi pi-times" text onClick={hideDeleteUserDialog} />
+            <Button label="Sim" icon="pi pi-check" text onClick={deleteUser} />
         </>
     );
     const deleteUsersDialogFooter = (

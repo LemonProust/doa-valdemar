@@ -12,16 +12,16 @@ export class BaseService{
     }
 
     // Método responsável por buscar todos os utilizadores.
-    getAllUsers(){
+    getAll(){
         return axiosInstance.get(this.url);
     }
     // Método responsável por buscar um utilizador pelo seu ID.
-    getUserById(id: number){
+    getById(id: number){
         return axiosInstance.get(this.url + "/" + id);
     }
 
     // Método responsável por criar um novo utilizador.
-    saveUser(object: any){
+    save(object: any){
         return axiosInstance.post(this.url, object);
     }
 
@@ -31,12 +31,12 @@ export class BaseService{
     } */
 
     // Método responsável por atualizar um utilizador.
-    updateUser(object: any){
+    update(object: any){
         return axiosInstance.put(this.url, object);
     }
 
     // Método responsável por excluir um utilizador.
-    deleteUser(id: number){
+    delete(id: number){
         return axiosInstance.delete(this.url + "/" + id);
     }
 } 
